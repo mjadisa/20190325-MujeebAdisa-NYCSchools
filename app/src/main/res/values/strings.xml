@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">20190325-MujeebAdisa-NYCSchools</string>
+    <string name="search_title">Please enter a city </string>
+    <string name="search_hint">Please enter a city </string>
+    <string name="school_name_label"> School Name: %s</string>
+    <string name="city_label">City: %s</string>
+    <string name="phone_number_label">Phone No: %s</string>
+    <string name="maths_score_label">Maths Score: %s</string>
+    <string name="reading_score_label">Reading Score: %s</string>
+    <string name="writing_score_label">Writing Score: %s</string>
+    <string name="no_of_test_takers_label">Number of test takers: %s</string>
+</resources>

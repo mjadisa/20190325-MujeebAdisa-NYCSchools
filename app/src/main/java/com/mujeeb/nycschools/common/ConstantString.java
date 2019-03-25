@@ -8,7 +8,7 @@ public class ConstantString {
     public static final int TIMEOUT_REQUEST = 30;
     public static final int CACHE_SIZE = 5 * 1024 * 1024;
     public static final int PAGE_START = 1;
-    public static final int TOTAL_PAGES = 5;
+    public static final int TOTAL_PAGES = 20;
     public static final int RESULTS_PER_PAGE = 20;
 
 

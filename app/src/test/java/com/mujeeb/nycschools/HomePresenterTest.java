@@ -47,7 +47,7 @@ public class HomePresenterTest {
     private InOrder inOrder;
     private HomePresenter homePresenter;
     private List<Academic> academicList;
-    private List<Academic> academicResultsResponse;
+
 
 
     @BeforeClass
@@ -67,15 +67,15 @@ public class HomePresenterTest {
         inOrder = inOrder(view, apiCall);
         homePresenter = new HomePresenter(view, apiCall);
         academicList = Collections.singletonList(academic);
-        academicResultsResponse = Collections.singletonList(academic);
+
 
         when(apiCall.getAcademicResultsByCity(ArgumentMatchers.anyString(), ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyInt(), ArgumentMatchers.anyInt())).thenReturn(Observable.just(academicResultsResponse));
+                ArgumentMatchers.anyInt(), ArgumentMatchers.anyInt())).thenReturn(Observable.just(academicList));
 
     }
 
     @Test
-    public void getResults_IsNewQuery_ClearsDataAndShowsResult() {
+    public void getResultsByCity_IsNewQuery_ClearsDataAndShowsResult() {
         homePresenter.getResultsByCity(SEARCH_TERM, true);
 
         inOrder.verify(view).clearResults();
@@ -92,7 +92,7 @@ public class HomePresenterTest {
     }
 
     @Test
-    public void getResults_IsNotNewQuery_IncrementsPageAndShowsResult() {
+    public void getResultsByCity_IsNotNewQuery_IncrementsPageAndShowsResult() {
         homePresenter.getResultsByCity(SEARCH_TERM, false);
 
         inOrder.verify(apiCall).getAcademicResultsByCity(APP_TOKEN, SEARCH_TERM,

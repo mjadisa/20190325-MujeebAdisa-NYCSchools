@@ -1,8 +1,8 @@
-package com.mujeeb.nycschools.mvp.academicdetails;
+package com.mujeeb.nycschools.mvp.schooldetails;
 
 import android.support.annotation.NonNull;
 
-public interface AcademicDetailsContract {
+public interface SchoolDetailsContract {
     interface View {
         void showSchoolName(@NonNull String schoolName);
 

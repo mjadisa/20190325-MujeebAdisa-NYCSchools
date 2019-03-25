@@ -3,7 +3,7 @@ package com.mujeeb.nycschools.mvp.home;
 import android.support.annotation.Nullable;
 
 import com.mujeeb.nycschools.api.NYCSchoolsApiCall;
-import com.mujeeb.nycschools.model.Academic;
+import com.mujeeb.nycschools.model.School;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +12,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.mujeeb.nycschools.common.ConstantString.APP_TOKEN;
-import static com.mujeeb.nycschools.common.ConstantString.PAGE_START;
-import static com.mujeeb.nycschools.common.ConstantString.RESULTS_PER_PAGE;
-import static com.mujeeb.nycschools.common.ConstantString.TOTAL_PAGES;
+import static com.mujeeb.nycschools.common.Constants.APP_TOKEN;
+import static com.mujeeb.nycschools.common.Constants.PAGE_START;
+import static com.mujeeb.nycschools.common.Constants.RESULTS_PER_PAGE;
+import static com.mujeeb.nycschools.common.Constants.TOTAL_PAGES;
 
 
 public class HomePresenter implements HomeContract.Presenter {
@@ -23,7 +23,7 @@ public class HomePresenter implements HomeContract.Presenter {
     private final HomeContract.View view;
     private final NYCSchoolsApiCall apiCall;
     private final CompositeDisposable compositeDisposable;
-    private final List<Academic> academics;
+    private final List<School> schools;
 
     private boolean isLoading;
     private int currentPage = PAGE_START;
@@ -34,41 +34,22 @@ public class HomePresenter implements HomeContract.Presenter {
         this.view = view;
         this.apiCall = apiCall;
         compositeDisposable = new CompositeDisposable();
-        academics = new ArrayList<>();
+        schools = new ArrayList<>();
         isLoading = false;
         isLastPage = false;
     }
 
-    @Override
-    public void getResultsByCity(@Nullable String searchTerm, boolean isNewQuery) {
-        if (isNewQuery) {
-            view.clearResults();
-            academics.clear();
-            currentPage = PAGE_START;
-            isLastPage = isLoading = false;
-        }
-        if (searchTerm != null && !isLoading) {
-            compositeDisposable.add(apiCall.getAcademicResultsByCity(APP_TOKEN, searchTerm, currentPage, RESULTS_PER_PAGE)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doOnSubscribe(disposable -> handleSubscriptionChange(true))
-                    .doOnTerminate(() -> handleSubscriptionChange(false))
-                    .subscribe(this::handleResult, this::handleError));
-        } else {
-            view.showError("Please try again");
-        }
-    }
 
     @Override
-    public void getResults(boolean isNewQuery) {
-        if (isNewQuery) {
+    public void getResults(boolean isNewPage) {
+        if (isNewPage) {
             view.clearResults();
-            academics.clear();
+            schools.clear();
             currentPage = PAGE_START;
             isLastPage = isLoading = false;
         }
         if (!isLoading) {
-            compositeDisposable.add(apiCall.getAcademicResults(APP_TOKEN, currentPage, RESULTS_PER_PAGE)
+            compositeDisposable.add(apiCall.getSchoolResults(APP_TOKEN, currentPage, RESULTS_PER_PAGE)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnSubscribe(disposable -> handleSubscriptionChange(true))
@@ -82,8 +63,8 @@ public class HomePresenter implements HomeContract.Presenter {
 
     @Override
     public void handleSearchResultSelection(int position) {
-        if (position >= 0 && position < academics.size()) {
-            view.navigateToDetails(academics.get(position).getDbn());
+        if (position >= 0 && position < schools.size()) {
+            view.navigateToDetails(schools.get(position).getDbn());
         }
     }
 
@@ -96,12 +77,12 @@ public class HomePresenter implements HomeContract.Presenter {
         }
     }
 
-    private void handleResult(@Nullable List<Academic> academicResultsResponse) {
-        if (academicResultsResponse != null) {
+    private void handleResult(@Nullable List<School> schoolResultsResponse) {
+        if (schoolResultsResponse != null) {
             isLastPage = currentPage >= TOTAL_PAGES;
             currentPage++;
-            this.academics.addAll(academicResultsResponse);
-            view.showResults(academicResultsResponse);
+            this.schools.addAll(schoolResultsResponse);
+            view.showResults(schoolResultsResponse);
         } else {
             view.showError("An unexpected error happened while getting your search results, please try again");
         }

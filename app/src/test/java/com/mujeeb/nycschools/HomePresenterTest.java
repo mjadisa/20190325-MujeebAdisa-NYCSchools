@@ -1,7 +1,7 @@
 package com.mujeeb.nycschools;
 
 import com.mujeeb.nycschools.api.NYCSchoolsApiCall;
-import com.mujeeb.nycschools.model.Academic;
+import com.mujeeb.nycschools.model.School;
 import com.mujeeb.nycschools.mvp.home.HomeContract;
 import com.mujeeb.nycschools.mvp.home.HomePresenter;
 
@@ -23,8 +23,8 @@ import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.internal.schedulers.ExecutorScheduler;
 import io.reactivex.plugins.RxJavaPlugins;
 
-import static com.mujeeb.nycschools.common.ConstantString.APP_TOKEN;
-import static com.mujeeb.nycschools.common.ConstantString.RESULTS_PER_PAGE;
+import static com.mujeeb.nycschools.common.Constants.APP_TOKEN;
+import static com.mujeeb.nycschools.common.Constants.RESULTS_PER_PAGE;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -34,10 +34,9 @@ import static org.mockito.Mockito.when;
 public class HomePresenterTest {
 
 
-    private static final String SEARCH_TERM = "Manhattan";
     private static final String DBN = "testDBN";
     @Mock
-    private Academic academic;
+    private School school;
     @Mock
     private HomeContract.View view;
     @Mock
@@ -46,8 +45,7 @@ public class HomePresenterTest {
 
     private InOrder inOrder;
     private HomePresenter homePresenter;
-    private List<Academic> academicList;
-
+    private List<School> schoolList;
 
 
     @BeforeClass
@@ -66,25 +64,25 @@ public class HomePresenterTest {
     public void setup() {
         inOrder = inOrder(view, apiCall);
         homePresenter = new HomePresenter(view, apiCall);
-        academicList = Collections.singletonList(academic);
+        schoolList = Collections.singletonList(school);
 
 
-        when(apiCall.getAcademicResultsByCity(ArgumentMatchers.anyString(), ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyInt(), ArgumentMatchers.anyInt())).thenReturn(Observable.just(academicList));
+        when(apiCall.getSchoolResults(ArgumentMatchers.anyString(),
+                ArgumentMatchers.anyInt(), ArgumentMatchers.anyInt())).thenReturn(Observable.just(schoolList));
 
     }
 
     @Test
-    public void getResultsByCity_IsNewQuery_ClearsDataAndShowsResult() {
-        homePresenter.getResultsByCity(SEARCH_TERM, true);
+    public void getResults_IsNewQuery_ClearsDataAndShowsResult() {
+        homePresenter.getResults(true);
 
         inOrder.verify(view).clearResults();
 
-        inOrder.verify(apiCall).getAcademicResultsByCity(APP_TOKEN, SEARCH_TERM,
+        inOrder.verify(apiCall).getSchoolResults(APP_TOKEN,
                 1, RESULTS_PER_PAGE);
         inOrder.verify(view).showProgress();
 
-        inOrder.verify(view).showResults(academicList);
+        inOrder.verify(view).showResults(schoolList);
 
         inOrder.verify(view).hideProgress();
 
@@ -92,21 +90,21 @@ public class HomePresenterTest {
     }
 
     @Test
-    public void getResultsByCity_IsNotNewQuery_IncrementsPageAndShowsResult() {
-        homePresenter.getResultsByCity(SEARCH_TERM, false);
+    public void getResults_IsNotNewQuery_IncrementsPageAndShowsResult() {
+        homePresenter.getResults(false);
 
-        inOrder.verify(apiCall).getAcademicResultsByCity(APP_TOKEN, SEARCH_TERM,
+        inOrder.verify(apiCall).getSchoolResults(APP_TOKEN,
                 1, RESULTS_PER_PAGE);
         inOrder.verify(view).showProgress();
-        inOrder.verify(view).showResults(academicList);
+        inOrder.verify(view).showResults(schoolList);
         inOrder.verify(view).hideProgress();
 
-        homePresenter.getResultsByCity(SEARCH_TERM, false);
+        homePresenter.getResults(false);
 
-        inOrder.verify(apiCall).getAcademicResultsByCity(APP_TOKEN, SEARCH_TERM,
+        inOrder.verify(apiCall).getSchoolResults(APP_TOKEN,
                 2, RESULTS_PER_PAGE);
         inOrder.verify(view).showProgress();
-        inOrder.verify(view).showResults(academicList);
+        inOrder.verify(view).showResults(schoolList);
         inOrder.verify(view).hideProgress();
 
         inOrder.verifyNoMoreInteractions();
@@ -114,8 +112,8 @@ public class HomePresenterTest {
 
     @Test
     public void handleSearchResultSelection_WithAValidPosition_NavigatesToDetails() {
-        when(academic.getDbn()).thenReturn(DBN);
-        homePresenter.getResultsByCity(SEARCH_TERM, true);
+        when(school.getDbn()).thenReturn(DBN);
+        homePresenter.getResults(true);
         homePresenter.handleSearchResultSelection(0);
         verify(view).navigateToDetails(DBN);
 

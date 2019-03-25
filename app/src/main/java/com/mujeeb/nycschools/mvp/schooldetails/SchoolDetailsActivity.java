@@ -1,4 +1,4 @@
-package com.mujeeb.nycschools.view.academicDetails;
+package com.mujeeb.nycschools.mvp.schooldetails;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,7 +10,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mujeeb.nycschools.R;
-import com.mujeeb.nycschools.mvp.academicdetails.AcademicDetailsContract;
 
 import javax.inject.Inject;
 
@@ -18,13 +17,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
 
-import static com.mujeeb.nycschools.common.ConstantString.DBN_KEY;
+import static com.mujeeb.nycschools.common.Constants.DBN_KEY;
 
 
-public class AcademicDetailsActivity extends AppCompatActivity implements AcademicDetailsContract.View {
+public class SchoolDetailsActivity extends AppCompatActivity implements SchoolDetailsContract.View {
 
-    @BindView(R.id.tv_academic_name)
-    TextView tvAcademicName;
+    @BindView(R.id.tv_school_name)
+    TextView tvSchoolName;
     @BindView(R.id.tv_no_of_test_takers)
     TextView tvTestTakersNumber;
     @BindView(R.id.tv_maths_score)
@@ -37,14 +36,14 @@ public class AcademicDetailsActivity extends AppCompatActivity implements Academ
     ProgressBar progressBar;
 
     @Inject
-    AcademicDetailsContract.Presenter presenter;
+    SchoolDetailsContract.Presenter presenter;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_academic_details);
+        setContentView(R.layout.activity_school_details);
         ButterKnife.bind(this);
         final String dbn = getIntent().getStringExtra(DBN_KEY);
         presenter.getData(dbn);
@@ -52,7 +51,7 @@ public class AcademicDetailsActivity extends AppCompatActivity implements Academ
 
     @Override
     public void showSchoolName(@NonNull String schoolName) {
-        tvAcademicName.setText(getString(R.string.school_name_label, schoolName));
+        tvSchoolName.setText(getString(R.string.school_name_label, schoolName));
     }
 
     @Override

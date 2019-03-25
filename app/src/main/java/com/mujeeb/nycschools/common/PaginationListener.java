@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 
 import java.util.Objects;
 
-import static com.mujeeb.nycschools.common.ConstantString.RESULTS_PER_PAGE;
+import static com.mujeeb.nycschools.common.Constants.RESULTS_PER_PAGE;
 
 public class PaginationListener extends RecyclerView.OnScrollListener {
     private final LinearLayoutManager linearLayoutManager;

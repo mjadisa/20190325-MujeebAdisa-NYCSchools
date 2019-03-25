@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">20190325-MujeebAdisa-NYCSchools</string>
+    <string name="app_name">NYC Schools</string>
     <string name="search_title">Please enter a city </string>
     <string name="search_hint">Please enter a city </string>
     <string name="school_name_label"> School Name: %s</string>

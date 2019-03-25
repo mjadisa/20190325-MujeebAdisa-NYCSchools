@@ -2,9 +2,9 @@ package com.mujeeb.nycschools.di.module;
 
 
 import com.mujeeb.nycschools.di.scope.HomeScope;
-import com.mujeeb.nycschools.view.home.AcademicListRecyclerViewAdapter;
-import com.mujeeb.nycschools.view.home.AcademicSelectedInterface;
-import com.mujeeb.nycschools.view.home.HomeActivity;
+import com.mujeeb.nycschools.mvp.home.HomeActivity;
+import com.mujeeb.nycschools.mvp.home.SchoolListRecyclerViewAdapter;
+import com.mujeeb.nycschools.mvp.home.SchoolSelectedInterface;
 
 import dagger.Module;
 import dagger.Provides;
@@ -13,14 +13,14 @@ import dagger.Provides;
 public class AdapterModule {
     @Provides
     @HomeScope
-    public AcademicListRecyclerViewAdapter provideAcademicListRecyclerViewAdapter(AcademicSelectedInterface academicSelectedInterface) {
-        return new AcademicListRecyclerViewAdapter(academicSelectedInterface);
+    public SchoolListRecyclerViewAdapter provideSchoolListRecyclerViewAdapter(SchoolSelectedInterface schoolSelectedInterface) {
+        return new SchoolListRecyclerViewAdapter(schoolSelectedInterface);
     }
 
 
     @Provides
     @HomeScope
-    public AcademicSelectedInterface provideAcademicSelectedInterface(HomeActivity homeActivity) {
+    public SchoolSelectedInterface provideSchoolSelectedInterface(HomeActivity homeActivity) {
         return homeActivity;
     }
 

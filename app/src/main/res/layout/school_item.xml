@@ -18,7 +18,7 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/tv_academic_name"
+            android:id="@+id/tv_school_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -28,7 +28,7 @@
             android:id="@+id/tv_school_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_academic_name"
+            android:layout_below="@+id/tv_school_name"
             android:fontFamily="@font/crete_round_italic" />
 
         <TextView

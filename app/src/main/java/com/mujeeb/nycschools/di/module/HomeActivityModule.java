@@ -2,9 +2,9 @@ package com.mujeeb.nycschools.di.module;
 
 import com.mujeeb.nycschools.api.NYCSchoolsApiCall;
 import com.mujeeb.nycschools.di.scope.HomeScope;
+import com.mujeeb.nycschools.mvp.home.HomeActivity;
 import com.mujeeb.nycschools.mvp.home.HomeContract;
 import com.mujeeb.nycschools.mvp.home.HomePresenter;
-import com.mujeeb.nycschools.view.home.HomeActivity;
 
 import dagger.Binds;
 import dagger.Module;

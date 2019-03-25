@@ -7,5 +7,5 @@ import javax.inject.Scope;
 
 @Scope
 @Retention(RetentionPolicy.RUNTIME)
-public @interface AcademicDetailsScope {
+public @interface SchoolDetailsScope {
 }

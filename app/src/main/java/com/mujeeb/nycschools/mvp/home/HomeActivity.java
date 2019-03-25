@@ -1,24 +1,19 @@
-package com.mujeeb.nycschools.view.home;
+package com.mujeeb.nycschools.mvp.home;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.view.Menu;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.mujeeb.nycschools.common.PaginationListener;
 import com.mujeeb.nycschools.R;
-import com.mujeeb.nycschools.model.Academic;
-import com.mujeeb.nycschools.mvp.home.HomeContract;
-import com.mujeeb.nycschools.view.academicDetails.AcademicDetailsActivity;
+import com.mujeeb.nycschools.common.PaginationListener;
+import com.mujeeb.nycschools.model.School;
+import com.mujeeb.nycschools.mvp.schooldetails.SchoolDetailsActivity;
 
 import java.util.List;
 
@@ -28,10 +23,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
 
-import static com.mujeeb.nycschools.common.ConstantString.DBN_KEY;
+import static com.mujeeb.nycschools.common.Constants.DBN_KEY;
 
 
-public class HomeActivity extends AppCompatActivity implements HomeContract.View, AcademicSelectedInterface,
+public class HomeActivity extends AppCompatActivity implements HomeContract.View, SchoolSelectedInterface,
         PaginationListener.PaginationStateListener {
 
     @BindView(R.id.rv_result)
@@ -43,9 +38,8 @@ public class HomeActivity extends AppCompatActivity implements HomeContract.View
     HomeContract.Presenter presenter;
 
     @Inject
-    AcademicListRecyclerViewAdapter academicAdapter;
+    SchoolListRecyclerViewAdapter schoolAdapter;
 
-    private String searchTerm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,42 +47,18 @@ public class HomeActivity extends AppCompatActivity implements HomeContract.View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
-        processIntent(getIntent());
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addOnScrollListener(new PaginationListener(linearLayoutManager, this));
-        recyclerView.setAdapter(academicAdapter);
+        recyclerView.setAdapter(schoolAdapter);
 
         presenter.getResults(true);
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        processIntent(intent);
-    }
-
-    private void processIntent(Intent intent) {
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            searchTerm = intent.getStringExtra(SearchManager.QUERY);
-            presenter.getResultsByCity(searchTerm, true);
-        }
-    }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_search, menu);
-        final SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        final SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-        if (searchManager != null) {
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        }
-        return true;
-    }
-
-    @Override
-    public void showResults(@NonNull List<Academic> academicList) {
-        academicAdapter.setData(academicList);
+    public void showResults(@NonNull List<School> schoolList) {
+        schoolAdapter.setData(schoolList);
     }
 
     @Override
@@ -99,7 +69,7 @@ public class HomeActivity extends AppCompatActivity implements HomeContract.View
 
     @Override
     public void navigateToDetails(@NonNull String dbn) {
-        final Intent intent = new Intent(this, AcademicDetailsActivity.class);
+        final Intent intent = new Intent(this, SchoolDetailsActivity.class);
         intent.putExtra(DBN_KEY, dbn);
         startActivity(intent);
     }
@@ -116,7 +86,7 @@ public class HomeActivity extends AppCompatActivity implements HomeContract.View
 
     @Override
     public void clearResults() {
-        academicAdapter.clearData();
+        schoolAdapter.clearData();
     }
 
     @Override
@@ -138,11 +108,8 @@ public class HomeActivity extends AppCompatActivity implements HomeContract.View
 
     @Override
     public void loadMoreItems() {
-        if (searchTerm == null || searchTerm.isEmpty()) {
-            presenter.getResults(false);
-        } else {
-            presenter.getResultsByCity(searchTerm, false);
-        }
+        presenter.getResults(false);
+
     }
 
     @Override

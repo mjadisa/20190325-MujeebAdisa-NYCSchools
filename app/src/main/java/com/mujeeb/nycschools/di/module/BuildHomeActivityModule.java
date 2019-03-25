@@ -1,7 +1,7 @@
 package com.mujeeb.nycschools.di.module;
 
 import com.mujeeb.nycschools.di.scope.HomeScope;
-import com.mujeeb.nycschools.view.home.HomeActivity;
+import com.mujeeb.nycschools.mvp.home.HomeActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;

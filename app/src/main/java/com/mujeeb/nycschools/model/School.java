@@ -3,7 +3,7 @@ package com.mujeeb.nycschools.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Academic {
+public class School {
 
     @SerializedName("academicopportunities1")
     @Expose

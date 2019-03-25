@@ -1,6 +1,6 @@
 package com.mujeeb.nycschools.common;
 
-public class ConstantString {
+public class Constants {
 
     public static final String BASE_URL = "https://data.cityofnewyork.us/resource/";
     public static final String APP_TOKEN = "eSCBsZfbHzq0xnQOUiHnjtGM9";

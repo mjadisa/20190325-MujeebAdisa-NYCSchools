@@ -21,10 +21,10 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.mujeeb.nycschools.common.ConstantString.APP_TOKEN;
-import static com.mujeeb.nycschools.common.ConstantString.BASE_URL;
-import static com.mujeeb.nycschools.common.ConstantString.CACHE_SIZE;
-import static com.mujeeb.nycschools.common.ConstantString.TIMEOUT_REQUEST;
+import static com.mujeeb.nycschools.common.Constants.APP_TOKEN;
+import static com.mujeeb.nycschools.common.Constants.BASE_URL;
+import static com.mujeeb.nycschools.common.Constants.CACHE_SIZE;
+import static com.mujeeb.nycschools.common.Constants.TIMEOUT_REQUEST;
 
 @Module
 public class NetworkModule {

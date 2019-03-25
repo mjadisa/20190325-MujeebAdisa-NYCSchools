@@ -1,15 +1,14 @@
 package com.mujeeb.nycschools.mvp.home;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
-import com.mujeeb.nycschools.model.Academic;
+import com.mujeeb.nycschools.model.School;
 
 import java.util.List;
 
 public interface HomeContract {
     interface View {
-        void showResults(@NonNull List<Academic> academics);
+        void showResults(@NonNull List<School> schools);
 
         void showError(@NonNull String message);
 
@@ -23,9 +22,8 @@ public interface HomeContract {
     }
 
     interface Presenter {
-        void getResultsByCity(@Nullable String searchTerm, boolean isNewQuery);
 
-        void getResults(boolean isNewQuery);
+        void getResults(boolean isNewPage);
 
         void handleSearchResultSelection(int position);
 

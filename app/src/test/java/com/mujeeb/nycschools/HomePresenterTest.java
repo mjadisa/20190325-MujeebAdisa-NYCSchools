@@ -79,7 +79,7 @@ public class HomePresenterTest {
         inOrder.verify(view).clearResults();
 
         inOrder.verify(apiCall).getSchoolResults(APP_TOKEN,
-                1, RESULTS_PER_PAGE);
+                0, RESULTS_PER_PAGE);
         inOrder.verify(view).showProgress();
 
         inOrder.verify(view).showResults(schoolList);
@@ -94,7 +94,7 @@ public class HomePresenterTest {
         homePresenter.getResults(false);
 
         inOrder.verify(apiCall).getSchoolResults(APP_TOKEN,
-                1, RESULTS_PER_PAGE);
+                0, RESULTS_PER_PAGE);
         inOrder.verify(view).showProgress();
         inOrder.verify(view).showResults(schoolList);
         inOrder.verify(view).hideProgress();
@@ -102,7 +102,7 @@ public class HomePresenterTest {
         homePresenter.getResults(false);
 
         inOrder.verify(apiCall).getSchoolResults(APP_TOKEN,
-                2, RESULTS_PER_PAGE);
+                20, RESULTS_PER_PAGE);
         inOrder.verify(view).showProgress();
         inOrder.verify(view).showResults(schoolList);
         inOrder.verify(view).hideProgress();

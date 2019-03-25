@@ -13,9 +13,9 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.mujeeb.nycschools.common.Constants.APP_TOKEN;
-import static com.mujeeb.nycschools.common.Constants.PAGE_START;
 import static com.mujeeb.nycschools.common.Constants.RESULTS_PER_PAGE;
-import static com.mujeeb.nycschools.common.Constants.TOTAL_PAGES;
+import static com.mujeeb.nycschools.common.Constants.START_RESULT_INDEX;
+import static com.mujeeb.nycschools.common.Constants.TOTAL_RESULTS;
 
 
 public class HomePresenter implements HomeContract.Presenter {
@@ -26,7 +26,7 @@ public class HomePresenter implements HomeContract.Presenter {
     private final List<School> schools;
 
     private boolean isLoading;
-    private int currentPage = PAGE_START;
+    private int offset = START_RESULT_INDEX;
     private boolean isLastPage;
 
 
@@ -45,11 +45,10 @@ public class HomePresenter implements HomeContract.Presenter {
         if (isNewPage) {
             view.clearResults();
             schools.clear();
-            currentPage = PAGE_START;
             isLastPage = isLoading = false;
         }
         if (!isLoading) {
-            compositeDisposable.add(apiCall.getSchoolResults(APP_TOKEN, currentPage, RESULTS_PER_PAGE)
+            compositeDisposable.add(apiCall.getSchoolResults(APP_TOKEN, offset, RESULTS_PER_PAGE)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnSubscribe(disposable -> handleSubscriptionChange(true))
@@ -79,8 +78,8 @@ public class HomePresenter implements HomeContract.Presenter {
 
     private void handleResult(@Nullable List<School> schoolResultsResponse) {
         if (schoolResultsResponse != null) {
-            isLastPage = currentPage >= TOTAL_PAGES;
-            currentPage++;
+            isLastPage = offset >= TOTAL_RESULTS;
+            offset = +RESULTS_PER_PAGE;
             this.schools.addAll(schoolResultsResponse);
             view.showResults(schoolResultsResponse);
         } else {

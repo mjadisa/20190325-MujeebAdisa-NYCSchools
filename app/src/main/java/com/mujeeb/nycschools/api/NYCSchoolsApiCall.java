@@ -19,7 +19,7 @@ public interface NYCSchoolsApiCall {
 
     @GET("s3k6-pzi2.json")
     Observable<List<School>> getSchoolResults(@Query("$$app_token") String appToken,
-                                              @Query("$offset") int pageNumber,
+                                              @Query("$offset") int offset,
                                               @Query("$limit") int limit);
 
 

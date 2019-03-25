@@ -79,7 +79,7 @@ public class HomePresenter implements HomeContract.Presenter {
     private void handleResult(@Nullable List<School> schoolResultsResponse) {
         if (schoolResultsResponse != null) {
             isLastPage = offset >= TOTAL_RESULTS;
-            offset = +RESULTS_PER_PAGE;
+            offset = offset + RESULTS_PER_PAGE;
             this.schools.addAll(schoolResultsResponse);
             view.showResults(schoolResultsResponse);
         } else {
